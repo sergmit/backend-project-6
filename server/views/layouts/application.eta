@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hexlet Fastify Boilerplate</title>
+    <script src="<%= it.assetPath('main.js') %>"></script>
+    <link href="<%= it.assetPath('main.css') %>" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="<%= it.route('root') %>">TaskManager</a>
+
+        <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
+          <div class="container-fluid">
+            <ul class="navbar-nav mr-auto"></ul>
+          </div>
+          <ul class="navbar-nav"></ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container wrapper flex-grow-1">
+      <% Object.entries(it.reply?.flash?.() || {}).forEach(([type, messages]) => { %>
+        <% messages.forEach((message) => { %>
+          <div class="alert alert-<%= it.getAlertClass(type) %>"><%= message %></div>
+        <% }) %>
+      <% }) %>
+      <%~ it.body %>
+    </div>
+
+    <footer>
+      <div class="container my-5 pt-4 border-top">
+        <a target="_blank" href="https://ru.hexlet.io">Hexlet</a>
+      </div>
+    </footer>
+  </body>
+</html>

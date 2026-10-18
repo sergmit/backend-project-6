@@ -1,0 +1,17 @@
+<%
+  const propertyName = it.propertyName
+  const propertyErrors = it._.get(it.errors, propertyName)
+  const classLine = `form-control${it._.isEmpty(propertyErrors) ? '' : ' is-invalid'}`
+%>
+<div class="mb-3<%= it._.isEmpty(propertyErrors) ? '' : ' has-danger' %>">
+  <label for="data_<%= propertyName %>"><%= propertyName %></label>
+  <input
+    id="data_<%= propertyName %>"
+    name="data[<%= propertyName %>]"
+    class="<%= classLine %>"
+    value="<%= it._.get(it.entity, propertyName, '') %>"
+  >
+  <% if (!it._.isEmpty(propertyErrors)) { %>
+    <div class="invalid-feedback"><%= propertyErrors.map(({ message }) => message).join('. ') %></div>
+  <% } %>
+</div>

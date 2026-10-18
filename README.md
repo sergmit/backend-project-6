@@ -7,6 +7,8 @@
 Учебный проект Хекслета: https://ru.hexlet.io/programs/backend
 Как это должно работать: https://files.hexlet.app/a/0rk6cs
 
+[Ссылка на проект](https://backend-project-6-35qw.onrender.com/)
+
 
 ## Стек
 
