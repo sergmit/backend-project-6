@@ -1,35 +1,30 @@
 // @ts-check
 
-import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import fastifyFormbody from '@fastify/formbody';
+import fastifyPassport from '@fastify/passport';
+import fastifySecureSession from '@fastify/secure-session';
+import fastifySensible from '@fastify/sensible';
 import fastifyStatic from '@fastify/static';
 // NOTE: не поддердивает fastify 4.x
 // import fastifyErrorPage from 'fastify-error-page';
 import fastifyView from '@fastify/view';
-import fastifyFormbody from '@fastify/formbody';
-import fastifySecureSession from '@fastify/secure-session';
-import fastifyPassport from '@fastify/passport';
-import fastifySensible from '@fastify/sensible';
-import { plugin as fastifyReverseRoutes } from 'fastify-reverse-routes';
-import fastifyObjectionjs from 'fastify-objectionjs';
-import qs from 'qs';
 import { Eta } from 'eta';
+import { plugin as fastifyReverseRoutes } from 'fastify-reverse-routes';
 import i18next from 'i18next';
-
-import ru from './locales/ru.js';
-import en from './locales/en.js';
-// @ts-expect-error
-import addRoutes from './routes/index.js';
+import qs from 'qs';
+import { db } from './db/index.js';
 import getHelpers from './helpers/index.js';
-import * as knexConfig from '../knexfile.js';
-import models from './models/index.js';
 // import fastifyMethodOverride from '@hexlet/fastify-method-override';
 import FormStrategy from './lib/passportStrategies/FormStrategy.js';
+import { findUserById } from './lib/users.js';
+import en from './locales/en.js';
+import ru from './locales/ru.js';
+// @ts-expect-error
+import addRoutes from './routes/index.js';
 
 const __dirname = fileURLToPath(path.dirname(import.meta.url));
-
-const mode = process.env.NODE_ENV || 'development';
-// const isDevelopment = mode === 'development';
 
 const setUpViews = (app) => {
     const helpers = getHelpers(app);
@@ -92,11 +87,9 @@ const registerPlugins = async (app) => {
         },
     });
 
-    fastifyPassport.registerUserDeserializer((user) =>
-        app.objection.models.user.query().findById(user.id),
-    );
+    fastifyPassport.registerUserDeserializer((user) => findUserById(user.id));
     fastifyPassport.registerUserSerializer((user) => Promise.resolve(user));
-    fastifyPassport.use(new FormStrategy('form', app));
+    fastifyPassport.use(new FormStrategy('form'));
     await app.register(fastifyPassport.initialize());
     await app.register(fastifyPassport.secureSession());
     await app.decorate('fp', fastifyPassport);
@@ -112,11 +105,6 @@ const registerPlugins = async (app) => {
     );
 
     // await app.register(fastifyMethodOverride);
-    await app.register(fastifyObjectionjs, {
-        // biome-ignore lint/performance/noDynamicNamespaceImportAccess: knexfile экспортирует конфиги по именам окружений
-        knexConfig: knexConfig[mode],
-        models,
-    });
 };
 
 export const options = {
@@ -125,6 +113,10 @@ export const options = {
 
 export default async (app, _options) => {
     await registerPlugins(app);
+
+    app.addHook('onClose', async () => {
+        await db.$client.end();
+    });
 
     await setupLocalization();
     setUpViews(app);

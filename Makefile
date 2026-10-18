@@ -4,7 +4,10 @@ install:
 	npm ci
 
 db-migrate:
-	npx knex migrate:latest
+	node scripts/db-migrate.js
+
+db-generate:
+	npx drizzle-kit generate
 
 build:
 	npm run build
@@ -16,7 +19,7 @@ start:
 	heroku local -f Procfile.dev
 
 start-backend:
-	npm start -- --watch --verbose-watch --ignore-watch='node_modules .git .sqlite'
+	npm start -- --watch --verbose-watch --ignore-watch='node_modules .git'
 
 start-frontend:
 	npx webpack --watch --progress
@@ -26,3 +29,15 @@ lint:
 
 test:
 	npm test -s
+
+docker-up:
+	docker compose up --build
+
+docker-down:
+	docker compose down
+
+docker-logs:
+	docker compose logs -f
+
+docker-clean:
+	docker compose down -v
