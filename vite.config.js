@@ -7,8 +7,14 @@ export default defineConfig({
         outDir: "dist",
         emptyOutDir: true,
         rollupOptions: {
-            input: "assets/css/source.css",
-            output: { assetFileNames: "main.css" },
+            input: {
+                main: "assets/js/main.js",
+                style: "assets/css/source.css",
+            },
+            output: {
+                entryFileNames: "main.js",
+                assetFileNames: "main[extname]",
+            },
         },
     },
 });
