@@ -1,0 +1,12 @@
+<div class="card">
+  <div class="card-body p-5 bg-light">
+    <h1 class="mb-4"><%= it.t('views.users.new.signUp') %></h1>
+    <form action="<%= it.route('createUser') %>" method="post">
+      <%~ include('../mixins/input', { propertyName: 'email', type: 'text', label: it.t('views.users.email'), entity: it.entity, errors: it.errors }) %>
+      <%~ include('../mixins/input', { propertyName: 'password', type: 'password', label: it.t('views.users.password'), entity: it.entity, errors: it.errors }) %>
+      <%~ include('../mixins/input', { propertyName: 'firstName', type: 'text', label: it.t('views.users.firstName'), entity: it.entity, errors: it.errors }) %>
+      <%~ include('../mixins/input', { propertyName: 'lastName', type: 'text', label: it.t('views.users.lastName'), entity: it.entity, errors: it.errors }) %>
+      <button type="submit" class="btn btn-primary"><%= it.t('views.users.new.submit') %></button>
+    </form>
+  </div>
+</div>

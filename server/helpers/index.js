@@ -1,5 +1,6 @@
 // @ts-check
 
+import i18next from 'i18next';
 import _ from 'lodash';
 
 export default (app) => ({
@@ -7,7 +8,7 @@ export default (app) => ({
         return app.reverse(name);
     },
     t(key) {
-        // return i18next.t(key);
+        return i18next.t(key);
     },
     _,
     getAlertClass(type) {

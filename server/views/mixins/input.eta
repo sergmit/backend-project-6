@@ -2,12 +2,15 @@
   const propertyName = it.propertyName
   const propertyErrors = it._.get(it.errors, propertyName)
   const classLine = `form-control${it._.isEmpty(propertyErrors) ? '' : ' is-invalid'}`
+  const label = it.label ?? propertyName
+  const type = it.type ?? 'text'
 %>
 <div class="mb-3<%= it._.isEmpty(propertyErrors) ? '' : ' has-danger' %>">
-  <label for="data_<%= propertyName %>"><%= propertyName %></label>
+  <label for="data_<%= propertyName %>"><%= label %></label>
   <input
     id="data_<%= propertyName %>"
     name="data[<%= propertyName %>]"
+    type="<%= type %>"
     class="<%= classLine %>"
     value="<%= it._.get(it.entity, propertyName, '') %>"
   >

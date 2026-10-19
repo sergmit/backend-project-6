@@ -39,6 +39,9 @@ export default {
             users: {
                 id: 'ID',
                 email: 'Email',
+                password: 'Password',
+                firstName: 'First name',
+                lastName: 'Last name',
                 createdAt: 'Created at',
                 new: {
                     submit: 'Register',
@@ -52,6 +55,9 @@ export default {
                     more: 'Learn more',
                 },
             },
+        },
+        validation: {
+            emailTaken: 'This email is already taken',
         },
     },
 };

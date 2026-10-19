@@ -39,6 +39,9 @@ export default {
             users: {
                 id: 'ID',
                 email: 'Email',
+                password: 'Пароль',
+                firstName: 'Имя',
+                lastName: 'Фамилия',
                 createdAt: 'Дата создания',
                 new: {
                     submit: 'Сохранить',
@@ -52,6 +55,9 @@ export default {
                     more: 'Узнать Больше',
                 },
             },
+        },
+        validation: {
+            emailTaken: 'Этот email уже занят',
         },
     },
 };
