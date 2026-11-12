@@ -1,0 +1,94 @@
+<div class="row">
+  <div class="col-md-8">
+    <h2><%= it.t('views.tasks.edit.title') %></h2>
+    
+    <form action="<%= it.route('updateTask', { id: it.entity.id }) %>" method="post">
+      <input type="hidden" name="_method" value="PATCH">
+      
+      <div class="mb-3">
+        <label for="name" class="form-label"><%= it.t('views.tasks.name') %></label>
+        <input 
+          type="text" 
+          class="form-control<% if (it.errors.name) { %> is-invalid<% } %>" 
+          id="name" 
+          name="data[name]" 
+          value="<%= it.entity.name || '' %>" 
+          required
+        >
+        <% if (it.errors.name) { %>
+          <div class="invalid-feedback"><%= it.errors.name[0].message %></div>
+        <% } %>
+      </div>
+      
+      <div class="mb-3">
+        <label for="description" class="form-label"><%= it.t('views.tasks.description') %></label>
+        <textarea 
+          class="form-control<% if (it.errors.description) { %> is-invalid<% } %>" 
+          id="description" 
+          name="data[description]" 
+          rows="3"
+        ><%= it.entity.description || '' %></textarea>
+        <% if (it.errors.description) { %>
+          <div class="invalid-feedback"><%= it.errors.description[0].message %></div>
+        <% } %>
+      </div>
+      
+      <div class="mb-3">
+        <label for="statusId" class="form-label"><%= it.t('views.tasks.status') %></label>
+        <select 
+          class="form-select<% if (it.errors.statusId) { %> is-invalid<% } %>" 
+          id="statusId" 
+          name="data[statusId]"
+        >
+          <option value="">Select status</option>
+          <% it.taskStatuses.forEach((status) => { %>
+            <option value="<%= status.id %>" <% if (it.entity.statusId == status.id) { %> selected<% } %>><%= status.name %></option>
+          <% }); %>
+        </select>
+        <% if (it.errors.statusId) { %>
+          <div class="invalid-feedback"><%= it.errors.statusId[0].message %></div>
+        <% } %>
+      </div>
+      
+      <div class="mb-3">
+        <label for="labelIds" class="form-label"><%= it.t('views.tasks.labels') %></label>
+        <% const selectedLabelIds = (it.entity.labelIds || []).map(Number); %>
+        <select
+          multiple
+          size="5"
+          class="form-select<% if (it.errors.labelIds) { %> is-invalid<% } %>"
+          id="labelIds"
+          name="data[labelIds][]"
+        >
+          <% it.labels.forEach((label) => { %>
+            <option value="<%= label.id %>" <% if (selectedLabelIds.includes(label.id)) { %>selected<% } %>><%= label.name %></option>
+          <% }); %>
+        </select>
+        <small class="form-text text-muted"><%= it.t('views.tasks.labelsHint') %></small>
+        <% if (it.errors.labelIds) { %>
+          <div class="invalid-feedback"><%= it.errors.labelIds[0].message %></div>
+        <% } %>
+      </div>
+
+      <div class="mb-3">
+        <label for="executorId" class="form-label"><%= it.t('views.tasks.executor') %></label>
+        <select 
+          class="form-select<% if (it.errors.executorId) { %> is-invalid<% } %>" 
+          id="executorId" 
+          name="data[executorId]"
+        >
+          <option value="">No executor</option>
+          <% it.users.forEach((user) => { %>
+            <option value="<%= user.id %>" <% if (it.entity.executorId == user.id) { %> selected<% } %>><%= user.firstName %> <%= user.lastName %></option>
+          <% }); %>
+        </select>
+        <% if (it.errors.executorId) { %>
+          <div class="invalid-feedback"><%= it.errors.executorId[0].message %></div>
+        <% } %>
+      </div>
+      
+      <button type="submit" class="btn btn-primary"><%= it.t('views.tasks.edit.submit') %></button>
+      <a href="<%= it.route('tasks') %>" class="btn btn-secondary">Cancel</a>
+    </form>
+  </div>
+</div>

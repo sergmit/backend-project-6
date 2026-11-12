@@ -1,0 +1,20 @@
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+          <div class="card-body p-5 bg-light">
+            <h1 class="mb-4"><%= it.t('views.users.show.title') %></h1>
+            <dl class="row">
+              <dt class="col-sm-4"><%= it.t('views.users.id') %></dt>
+              <dd class="col-sm-8"><%= it.user.id %></dd>
+              <dt class="col-sm-4"><%= it.t('views.users.email') %></dt>
+              <dd class="col-sm-8"><%= it.user.email %></dd>
+              <dt class="col-sm-4"><%= it.t('views.users.firstName') %></dt>
+              <dd class="col-sm-8"><%= it.user.firstName ?? '' %></dd>
+              <dt class="col-sm-4"><%= it.t('views.users.lastName') %></dt>
+              <dd class="col-sm-8"><%= it.user.lastName ?? '' %></dd>
+            </dl>
+            <a class="btn btn-primary" href="<%= it.route('editUser', { id: it.user.id }) %>"><%= it.t('views.users.show.edit') %></a>
+          </div>
+        </div>
+    </div>
+</div>

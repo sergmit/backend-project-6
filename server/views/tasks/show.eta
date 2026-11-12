@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-8">
+    <h2><%= it.task.name %></h2>
+    
+    <p><strong><%= it.t('views.tasks.description') %>:</strong> <%= it.task.description %></p>
+    
+    <p><strong><%= it.t('views.tasks.status') %>:</strong> <%= it.task.status.name %></p>
+
+    <p>
+      <strong><%= it.t('views.tasks.labels') %>:</strong>
+      <% if (it.task.taskLabels.length === 0) { %>
+        —
+      <% } else { %>
+        <% it.task.taskLabels.forEach(({ label }) => { %>
+          <span class="badge bg-secondary"><%= label.name %></span>
+        <% }); %>
+      <% } %>
+    </p>
+    
+    <p><strong><%= it.t('views.tasks.creator') %>:</strong> <%= it.task.creator.firstName %> <%= it.task.creator.lastName %></p>
+    
+    <% if (it.task.executor) { %>
+      <p><strong><%= it.t('views.tasks.executor') %>:</strong> <%= it.task.executor.firstName %> <%= it.task.executor.lastName %></p>
+    <% } %>
+    
+    <p><strong><%= it.t('views.tasks.createdAt') %>:</strong> <%= it.formatDate(it.task.createdAt) %></p>
+    
+    <% if (it.task.updatedAt) { %>
+      <p><strong><%= it.t('views.tasks.updatedAt') %>:</strong> <%= it.formatDate(it.task.updatedAt) %></p>
+    <% } %>
+    
+    <% if (it.isAuthenticated() && it.currentUser?.id === it.task.creatorId) { %>
+      <div class="mt-3">
+        <a href="<%= it.route('editTask', { id: it.task.id }) %>" class="btn btn-primary"><%= it.t('views.tasks.show.edit') %></a>
+        <form action="<%= it.route('deleteTask', { id: it.task.id }) %>" method="post" style="display: inline;" onsubmit="return confirm('<%= it.t('views.tasks.index.confirmDelete') %>');">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit" class="btn btn-danger"><%= it.t('views.tasks.show.delete') %></button>
+        </form>
+      </div>
+    <% } %>
+  </div>
+</div>

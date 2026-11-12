@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="card-body p-5 bg-light">
+    <h1 class="mb-4"><%= it.t('views.users.index.title') %></h1>
+    <% if (it.users.length === 0) { %>
+      <p class="mb-0"><%= it.t('views.users.index.empty') %></p>
+    <% } else { %>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle mb-0">
+          <thead>
+            <tr>
+              <th scope="col"><%= it.t('views.users.id') %></th>
+              <th scope="col"><%= it.t('views.users.email') %></th>
+              <th scope="col"><%= it.t('views.users.firstName') %></th>
+              <th scope="col"><%= it.t('views.users.lastName') %></th>
+              <% if (it.isAuthenticated()) { %>
+                <th scope="col"><%= it.t('views.users.index.actions') %></th>
+              <% } %>
+            </tr>
+          </thead>
+          <tbody>
+            <% it.users.forEach((user) => { %>
+              <tr>
+                <td><%= user.id %></td>
+                <td><%= user.email %></td>
+                <td><%= user.firstName ?? '' %></td>
+                <td><%= user.lastName ?? '' %></td>
+                <% if (it.isAuthenticated()) { %>
+                  <td>
+                    <form action="<%= it.route('deleteUser', { id: user.id }) %>" method="post">
+                      <input type="hidden" name="_method" value="DELETE">
+                      <button type="submit" class="btn btn-sm btn-danger"><%= it.t('views.users.index.delete') %></button>
+                    </form>
+                  </td>
+                <% } %>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+</div>

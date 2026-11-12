@@ -22,8 +22,9 @@ Avoid Makefile `start` / `start-backend` / `start-frontend` — stale (reference
 
 - `server/index.js` — Fastify app factory (default-export plugin, loaded by fastify-cli). Registers: passport form strategy (`server/lib/passportStrategies/`), secure-session (requires `SESSION_KEY`), i18next (lng `en`, fallback `ru`; strings in `server/locales/`), Eta views (`server/views/`, layout `layouts/application.eta`), static files from `dist/` under `/assets/`
 - `server/routes/index.js` — add each new route module to the `controllers` array; named routes via fastify-reverse-routes (`app.reverse('name')`, exposed to templates as `route(name)`)
+- `routes.md` — registry of all HTTP routes. Whenever routes in `server/routes/` are added, changed, or removed, update `routes.md` accordingly
 - Templates receive helpers from `server/helpers/index.js` in the Eta default context; render with `reply.render('view/path', locals)`
-- `server/db/` — Drizzle client (pg Pool) in `index.js`, schema in `schema.js` (single `users` table). Env loaded via `process.loadEnvFile()` in try/catch — inside Docker, compose env vars win over `.env`
+- `server/db/` — Drizzle client (pg Pool) in `index.js`, schema in `schema.js` (`users`, `task_statuses`, `tasks`). Env loaded via `process.loadEnvFile()` in try/catch — inside Docker, compose env vars win over `.env`
 - `server/lib/secure.cjs` — deliberate CJS island (`.cjs` in an ESM package); passwords are plain SHA-256 hex (curriculum requirement)
 - `docker/node/entrypoint.sh` — container boot: waits for Postgres, re-runs `npm ci` if `package-lock.json` hash changed, applies migrations, `vite build` + watch, then fastify in watch mode
 

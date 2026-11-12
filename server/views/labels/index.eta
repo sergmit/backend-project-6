@@ -1,0 +1,40 @@
+<div class="card">
+  <div class="card-body p-5 bg-light">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="mb-0"><%= it.t('views.labels.index.title') %></h1>
+      <a class="btn btn-primary" href="<%= it.route('newLabel') %>"><%= it.t('views.labels.index.create') %></a>
+    </div>
+    <% if (it.labels.length === 0) { %>
+      <p class="mb-0"><%= it.t('views.labels.index.empty') %></p>
+    <% } else { %>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle mb-0">
+          <thead>
+            <tr>
+              <th scope="col"><%= it.t('views.labels.id') %></th>
+              <th scope="col"><%= it.t('views.labels.name') %></th>
+              <th scope="col"><%= it.t('views.labels.createdAt') %></th>
+              <th scope="col"><%= it.t('views.labels.index.actions') %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% it.labels.forEach((label) => { %>
+              <tr>
+                <td><%= label.id %></td>
+                <td><%= label.name %></td>
+                <td><%= it.formatDate(label.createdAt) %></td>
+                <td>
+                  <a class="btn btn-sm btn-outline-secondary" href="<%= it.route('editLabel', { id: label.id }) %>"><%= it.t('views.labels.index.edit') %></a>
+                  <form action="<%= it.route('deleteLabel', { id: label.id }) %>" method="post" class="d-inline">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn btn-sm btn-danger"><%= it.t('views.labels.index.delete') %></button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+</div>
